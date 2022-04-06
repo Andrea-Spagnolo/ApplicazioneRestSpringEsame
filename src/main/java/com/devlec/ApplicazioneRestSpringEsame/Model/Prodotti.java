@@ -1,4 +1,4 @@
-package Model;
+package com.devlec.ApplicazioneRestSpringEsame.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +29,9 @@ public class Prodotti {
         this.datascadenza=datascadenza;
     }
     public Prodotti(String NomeProd, float prezzo){
-        this.NomeProd=NomeProd;
+        this.quantita=quantita;
         this.prezzo=prezzo;
+        this.datascadenza=datascadenza;
     }
     public Long getId(){
         return id;
