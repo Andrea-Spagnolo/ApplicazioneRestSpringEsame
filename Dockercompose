@@ -1,0 +1,16 @@
+version: "3"
+services:
+usertest:
+image: usertest:latest
+build:
+context: .
+dockerfile: Dockerfile
+container_name: usertest
+restart: always
+ports:
+- 8080:8080
+networks:
+- usertest
+networks:
+usertest:users
+external: true

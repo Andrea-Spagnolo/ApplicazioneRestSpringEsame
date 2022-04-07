@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ProdottiRepository extends JpaRepository<Prodotti, Long>{
     List<Prodotti> findByNome(String NomeProd);
-    List<Prodotti> findBydatascadenzaBetween(Date datascadenza);
+    List<Prodotti> findBydatascadenzaBetween(Date datascadenza, Date to);
 }

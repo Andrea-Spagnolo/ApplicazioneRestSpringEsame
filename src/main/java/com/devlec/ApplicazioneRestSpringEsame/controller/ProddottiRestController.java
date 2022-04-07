@@ -3,14 +3,14 @@ package com.devlec.ApplicazioneRestSpringEsame.controller;
 import com.devlec.ApplicazioneRestSpringEsame.Model.Prodotti;
 import com.devlec.ApplicazioneRestSpringEsame.Avviso.Prodottonontrovato;
 import com.devlec.ApplicazioneRestSpringEsame.persistenza.ProdottiRepository;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons-csv;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -34,7 +34,7 @@ public class ProddottiRestController {
 
     @GetMapping("/prodotto/{id}")
     public List<Prodotti> trovaprodottoconid(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new Prodottonontrovato(id));
+        return (List<Prodotti>) repository.findById(id).orElseThrow(() -> new Prodottonontrovato(id));
     }
 
     @PostMapping("/prodotto")
@@ -46,8 +46,8 @@ public class ProddottiRestController {
     public Prodotti aggiornadatiprodotti(@PathVariable Long id, @RequestBody Prodotti prodotti) {
         return repository.findById(id).map(
                 nuovoprodotto -> {
-                    nuovoprodotto.setQuantita(prodotti.getQuantita());
                     nuovoprodotto.setPrezzo(prodotti.getPrezzo());
+                    nuovoprodotto.setQuantita(prodotti.getQuantita());
                     return repository.save(nuovoprodotto);
                 }
         ).orElseGet(
@@ -77,8 +77,8 @@ public class ProddottiRestController {
         return repository.findBydatascadenzaBetween(from, to);
     }
 
-    private static final @PostMapping("/prodotto/csv")
-    public <CSVRecord> ResponseEntity<String> caricaCSV(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/prodotto/csv")
+    public ResponseEntity<String> caricaCSV(@RequestParam("file") MultipartFile file) {
         Reader in = null;
         try {
             in = new InputStreamReader(file.getInputStream());
@@ -98,7 +98,5 @@ public class ProddottiRestController {
             logger.error("Si è verificato un errore", e);
         }
         return ResponseEntity.ok("CSV");
-        Logger logger = LoggerFactory.getLogger(ProddottiRestController.class);
-        ProddottiRestController = Logger logger = LoggerFactory.getLogger(ProddottiRestController.class);
     }
 }

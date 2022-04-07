@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Configuration
@@ -17,8 +18,8 @@ public class PrimoInserimento {
     @Bean
     CommandLineRunner inseriscielementi(ProdottiRepository repository){
         return args -> {
-            Prodotti p1=new Prodotti("Verdure","0,50","1,00");
-            Prodotti p2=new Prodotti("Carne","0,75","5,00");
+            Prodotti p1=new Prodotti("farina", 1f, 2.50f);
+            Prodotti p2=new Prodotti("carne", 10.5f, 5f);
 
             List<Prodotti> prodotti=new ArrayList<>();
             prodotti.add(p1);
@@ -33,23 +34,23 @@ public class PrimoInserimento {
                     p1deldb=p;
                     indice++;
                 }
-                logger.info("Prodotto: "+p.getNomeProd());
+                logger.info("Prodotto: "+p.getNome());
                 logger.info("Quantita: "+p.getQuantita());
                 logger.info("Prezzo: "+p.getPrezzo());
-                logger.info("Data di scadenza: "p.getDatascadenza());
+                logger.info("Data di scadenza: "+p.getDatascadenza());
                 logger.warn(p.toString());
             }
             Prodotti prodottoconid1=repository.findById(1L).get();
-            logger.info("Il prodotto con id 1: "+prodottoconid1.getNomeProd());
-            p1deldb.setPrezzo("Nuovo prezzo: ");
+            logger.info("Il prodotto con id 1: "+prodottoconid1.getNome());
+            p1deldb.setPrezzo(1f);
             repository.save(p1deldb);
-            p1deldb.setQuantita("Nuova quantita: ");
+            p1deldb.setQuantita(2f);
             repository.save(p1deldb);
-            p1deldb.setDatascadenza("Nuova data di scadenza: ");
+            p1deldb.setDatascadenza(new Date());
             repository.save(p1deldb);
             prodottidalDB=repository.findAll();
             for (Prodotti p:prodottidalDB){
-                logger.info("Nome del prodotto: "+p.getNomeProd());
+                logger.info("Nome del prodotto: "+p.getNome());
                 logger.info("Quantita: "+p.getQuantita());
                 logger.info("Prezzo: "+p.getPrezzo());
                 logger.info("Data di scadenza: "+p.getDatascadenza());
